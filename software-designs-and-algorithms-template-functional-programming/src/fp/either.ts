@@ -41,8 +41,7 @@ export const isLeft = <E, A>(val: Either<E, A>): val is Left<E> => val._tag === 
  */
 export const map =
   <E, A, B>(fn: (a: A) => B) =>
-  // @ts-expect-error
-  (fa: Either<E, A>): Either<E, B> => {};
+  (fa: Either<E, A>): Either<E, B> => (isRight(fa) ? right<E, B>(fn(fa.right)) : (fa as Either<E, B>));
 
 /**
  * Add possibility to act as an Apply
@@ -65,8 +64,8 @@ export const flatten = <E, A>(a: Either<E, Either<E, A>>): Either<E, A> => (isRi
  * Either the Promise is resolved - should return Right
  * Or the Promise is rejected - should return Left
  */
-// @ts-expect-error
-export const fromPromise = <E, A>(promise: Promise<A>): Promise<Either<E, A>> => {};
+export const fromPromise = <E, A>(promise: Promise<A>): Promise<Either<E, A>> =>
+  promise.then((value) => right<E, A>(value)).catch((error) => left<E, A>(error as E));
 /**
  * Get the value from the Right, or call onLeft function
  * See examples in the tests
@@ -86,5 +85,4 @@ export const getOrElse =
  */
 export const fold =
   <E, A, B>(onLeft: (e: E) => B, onRight: (a: A) => B) =>
-  // @ts-expect-error
-  (ma: Either<E, A>): B => {};
+  (ma: Either<E, A>): B => (isRight(ma) ? onRight(ma.right) : onLeft(ma.left));
