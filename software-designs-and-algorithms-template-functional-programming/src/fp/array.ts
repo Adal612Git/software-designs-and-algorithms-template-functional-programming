@@ -7,5 +7,4 @@ export const map =
 
 export const sort =
   <A>(ord: Ord<A>) =>
-  // @ts-expect-error
-  (list: Array<A>): Array<A> => {};
+  (list: Array<A>): Array<A> => [...list].sort((a, b) => ord.compare(a, b));
