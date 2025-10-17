@@ -59,7 +59,7 @@ export const show =
     const summary =
       availableClients.length === totalClients
         ? 'This executor meets all demands of all clients!'
-        : `This executor meets the demands of only ${availableClients.length} out of ${totalClients} clients.`;
+        : `This executor meets the demands of only ${availableClients.length} out of ${totalClients} clients`;
 
     const header =
       sortBy === SortBy.reward
